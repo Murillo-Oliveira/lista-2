@@ -29,31 +29,51 @@ ORDER BY
     clientes.cliente_id, interacoes.data_interacao;
 
 
-3
+3.1
 
-SELECT CONCAT(Customers.first_name, ' ', Customers.last_name) AS full_name, 
-      SUM(Order_Items.quantity * Products.price) AS total_spent
-FROM Customers
-JOIN Orders ON Customers.customer_id = Orders.customer_id
-JOIN Order_Items ON Orders.order_id = Order_Items.order_id
-JOIN Products ON Order_Items.product_id = Products.product_id
-GROUP BY Customers.customer_id, Customers.first_name, Customers.last_name;
+SELECT 
+    t.transacao_id,
+    c.nome AS conta_nome,
+    t.tipo AS transacao_tipo,
+    t.valor AS transacao_valor,
+    t.data_transacao,
+    t.descricao
+FROM 
+    transacoes t
+INNER JOIN 
+    contas c
+ON 
+    t.conta_id = c.conta_id;
 
+4.1
 
+SELECT 
+    p.nome AS paciente_nome,
+    pr.medico AS medico_nome,
+    pr.data_consulta,
+    pr.diagnostico,
+    pr.prescricao,
+    pr.observacoes
+FROM 
+    prontuarios pr
+INNER JOIN 
+    pacientes p
+ON 
+    pr.paciente_id = p.paciente_id;
 
-4
+5.1
 
-SELECT CONCAT(Customers.first_name, ' ', Customers.last_name) AS full_name
-FROM Customers
-LEFT JOIN Orders ON Customers.customer_id = Orders.customer_id
-WHERE Orders.order_id IS NULL;
-
-
-
-5
-
-SELECT Products.product_name, SUM(Order_Items.quantity) AS total_quantity_sold
-FROM Order_Items
-JOIN Products ON Order_Items.product_id = Products.product_id
-GROUP BY Products.product_name
-ORDER BY total_quantity_sold DESC;
+SELECT 
+    p.nome AS produto_nome,
+    p.descricao AS produto_descricao,
+    p.preco AS produto_preco,
+    f.nome AS fornecedor_nome,
+    f.contato AS fornecedor_contato,
+    f.telefone AS fornecedor_telefone,
+    f.endereco AS fornecedor_endereco
+FROM 
+    produtos p
+LEFT JOIN 
+    fornecedores f
+ON 
+    p.fornecedor_id = f.fornecedor_id;
